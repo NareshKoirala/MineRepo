@@ -28,3 +28,4 @@ C:\Users\chels\Desktop\MineRepo\MainWebsite\Main\Main\obj\Debug\net8.0\refint\Ma
 C:\Users\chels\Desktop\MineRepo\MainWebsite\Main\Main\obj\Debug\net8.0\Main.pdb
 C:\Users\chels\Desktop\MineRepo\MainWebsite\Main\Main\obj\Debug\net8.0\Main.genruntimeconfig.cache
 C:\Users\chels\Desktop\MineRepo\MainWebsite\Main\Main\obj\Debug\net8.0\ref\Main.dll
+C:\Users\chels\Desktop\MineRepo\MainWebsite\Main\Main\obj\Debug\net8.0\Main.sourcelink.json

@@ -17,6 +17,14 @@ namespace Main.Controllers
         {
             return View();
         }
+        public IActionResult Apps()
+        {
+            return View();
+        }
+        public IActionResult Socials()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
