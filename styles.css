@@ -2,8 +2,6 @@ body {
     display: flex;
     min-height: 100vmin;
     background: radial-gradient(ellipse at bottom, #203c64 0%, #02082c 100%);
- 
-    overflow: hidden;
 
     justify-content: center;
     align-items: center;
