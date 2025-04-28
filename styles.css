@@ -2,30 +2,11 @@ body {
     display: flex;
     min-height: 100vmin;
     background: radial-gradient(ellipse at bottom, #203c64 0%, #02082c 100%);
-
-    justify-content: center;
-    align-items: center;
-}
-
-.container {
-    text-align: center;
-    display: grid;
-    grid-template-columns: 1 1 1;
-    padding: 40px;
-    background-color: rgb(245, 245, 245);
-    border-radius: 10px;
-    -webkit-box-shadow:0px 0px 63px 33px rgb(17, 0, 255);
-    -moz-box-shadow: 0px 0px 63px 33px rgba(153, 0, 255, 0.44);
-    box-shadow: 0px 0px 63px 33px rgba(153, 0, 255, 0.44);
-}
-body {
-    display: flex;
-    min-height: 100vmin;
-    background: radial-gradient(ellipse at bottom, #203c64 0%, #02082c 100%);
     justify-content: center;
     align-items: center;
     position: relative;
     margin: 0;
+    overflow: hidden;
 }
 
 .background-layer {
