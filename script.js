@@ -1,32 +1,24 @@
-$(document).ready(()=>{
+$(document).ready(() => {
     console.log("Here its Ready For JS");
-
     AddStars();
-
-
 });
 
-const numDots = 100; // Adjust as needed
+const numDots = 10;
+let stars = [];
 
-function AddStars()
-{
-    for (let i = 0; i < numDots; i++) 
-    {
-        // Generate random positions
+function AddStars() {
+    for (let i = 0; i < numDots; i++) {
         const randomX = Math.floor(Math.random() * $(window).width());
         const randomY = Math.floor(Math.random() * $(window).height());
 
+        let star = $('<span>').addClass('star').css({
+            top: `${randomY}px`,
+            left: `${randomX}px`,
+        });
 
-        // Create and style the dot
-        $('<div>').css({
-            width: '3px',            // Size of the dot
-            height: '3px',
-            backgroundColor: 'white', // Color
-            borderRadius: '50%',     // Circular shape
-            position: 'absolute',    // Absolute positioning
-            top: `${randomY}px`,     // Random Y position
-            left: `${randomX}px`,    // Random X position
-            margin: '0'              // Remove margin for precise positioning
-        }).appendTo('body');
+        star.appendTo('body');
+
+        stars.push(star);
     }
+    console.log(stars);
 }
