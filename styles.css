@@ -64,3 +64,26 @@ h1 {
     font-family: Arial, sans-serif;
 }
 
+.myButton {
+	box-shadow: 7px 5px 17px 1px #42237d;
+	background:linear-gradient(to bottom, #601baf 5%, #890add 100%);
+	background-color:#be8ef5;
+	border-radius:22px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:20px;
+	padding:20px 60px;
+	text-decoration:none;
+	text-shadow:6px 6px 5px #060a1f;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #8b0be0 5%, #be8ef5 100%);
+	background-color:#5f0c96;
+    animation: pulse 2s infinite;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
