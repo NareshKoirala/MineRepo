@@ -15,7 +15,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Behind the container */
+    z-index: 1;
+    /* Behind the container */
 }
 
 .container {
@@ -29,9 +30,14 @@ body {
     -moz-box-shadow: 0px 0px 63px 33px rgba(153, 0, 255, 0.44);
     box-shadow: 0px 0px 63px 33px rgba(153, 0, 255, 0.44);
     position: relative;
-    z-index: 10; /* Above the background layer */
+    z-index: 10;
+    /* Above the background layer */
 }
-.resume-btn, .Linkdln-btn, .GitHub-btn, .myButton {
+
+.resume-btn,
+.Linkdln-btn,
+.GitHub-btn,
+.myButton {
     display: inline-block;
     padding: 15px 30px;
     padding-bottom: 20px;
@@ -60,7 +66,9 @@ body {
     }
 }
 
-.resume-btn:hover, .GitHub-btn:hover, .Linkdln-btn:hover {
+.resume-btn:hover,
+.GitHub-btn:hover,
+.Linkdln-btn:hover {
     background-color: #055183;
     animation: pulse 2s infinite;
 }
@@ -75,20 +83,21 @@ h1 {
     font-family: Arial, sans-serif;
 }
 
-.myButton{
-	box-shadow: 7px 5px 17px 1px #42237d;
-	background:linear-gradient(to bottom, #601baf 5%, #890add 100%);
+.myButton {
+    box-shadow: 7px 5px 17px 1px #42237d;
+    background: linear-gradient(to bottom, #601baf 5%, #890add 100%);
     width: 10em;
 }
 
 .myButton:hover {
-	background:linear-gradient(to bottom, #8b0be0 5%, #be8ef5 100%);
-	background-color:#5f0c96;
+    background: linear-gradient(to bottom, #8b0be0 5%, #be8ef5 100%);
+    background-color: #5f0c96;
     animation: pulse 2s infinite;
 }
+
 .myButton:active {
-	position:relative;
-	top:1px;
+    position: relative;
+    top: 1px;
 }
 
 /* Add a class to the dots for styling */
@@ -99,11 +108,12 @@ h1 {
     border-radius: 50%;
     position: absolute;
     margin: 0;
-    z-index: 1; /* Lower z-index to appear behind the container */
+    z-index: 1;
+    /* Lower z-index to appear behind the container */
 }
 
 
-span{
+span {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -111,10 +121,11 @@ span{
     height: 4px;
     background: #fff;
     border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1)  ;
-    animation:  animate 3s linear infinite;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1);
+    animation: animate 3s linear infinite;
 }
-span::before{
+
+span::before {
     content: '';
     position: absolute;
     top: 50%;
@@ -123,104 +134,170 @@ span::before{
     height: 1px;
     background: linear-gradient(90deg, #fff, transparent);
 }
+
 @keyframes animate {
-    0%
-    {
+    0% {
         transform: rotate(315deg) translateX(0);
         opacity: 1;
     }
-    70%
-    {
+
+    70% {
         opacity: 1;
 
     }
-    100%
-    {
+
+    100% {
         transform: rotate(315deg) translateX(-1500px);
         opacity: 0;
 
     }
-    
+
 }
-span:nth-child(1){
+
+span:nth-child(1) {
     top: 0;
     right: 0;
-    left:initial;
-    animation-delay:0 ;
+    left: initial;
+    animation-delay: 0;
     animation-duration: 1s;
 }
 
-span:nth-child(2){
+span:nth-child(2) {
     top: 0;
     right: 80px;
-    left:initial;
-    animation-delay:0.2s;
+    left: initial;
+    animation-delay: 0.2s;
     animation-duration: 3s;
 }
 
-span:nth-child(3){
+span:nth-child(3) {
     top: 80px;
     right: 0px;
-    left:initial;
-    animation-delay:0.4s ;
+    left: initial;
+    animation-delay: 0.4s;
     animation-duration: 2s;
 }
 
-span:nth-child(4){
+span:nth-child(4) {
     top: 0;
     right: 180px;
-    left:initial;
-    animation-delay:0.6s;
+    left: initial;
+    animation-delay: 0.6s;
     animation-duration: 1.5s;
 }
 
-span:nth-child(5){
+span:nth-child(5) {
     top: 0;
     right: 400px;
-    left:initial;
-    animation-delay:0.8s;
+    left: initial;
+    animation-delay: 0.8s;
     animation-duration: 2.5s;
 }
 
-span:nth-child(6){
+span:nth-child(6) {
     top: 0;
     right: 600px;
-    left:initial;
-    animation-delay:1s ;
+    left: initial;
+    animation-delay: 1s;
     animation-duration: 3s;
 }
-span:nth-child(7 ){
+
+span:nth-child(7) {
     top: 300px;
     right: 0px;
-    left:initial;
-    animation-delay:1s ;
+    left: initial;
+    animation-delay: 1s;
     animation-duration: 1.75s;
 }
 
-span:nth-child(8){
+span:nth-child(8) {
     top: 0px;
     right: 700px;
-    left:initial;
-    animation-delay:1.4s ;
+    left: initial;
+    animation-delay: 1.4s;
     animation-duration: 1.25s;
 }
 
-span:nth-child(9){
+span:nth-child(9) {
     top: 0px;
     right: 1000px;
-    left:initial;
-    animation-delay:0.75s ;
+    left: initial;
+    animation-delay: 0.75s;
     animation-duration: 2.25s;
 }
 
-span:nth-child(10){
+span:nth-child(10) {
     top: 0px;
     right: 1000px;
-    left:initial;
-    animation-delay:2.75s ;
+    left: initial;
+    animation-delay: 2.75s;
     animation-duration: 2.25s;
 }
 
+@media only screen and (max-width: 600px) {
+    body {
+        display: flex;
+        background: radial-gradient(ellipse at bottom, #203c64 0%, #02082c 100%);
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        margin: 0;
+    }
 
 
+    .resume-btn,
+    .Linkdln-btn,
+    .GitHub-btn,
+    .myButton {
+        display: inline-block;
+        padding: 12px 25px; /* Slightly smaller padding for mobile */
+        padding-bottom: 15px;
+        background-color: #6c07df;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1em; /* Slightly smaller font size */
+        transition: background-color 0.3s;
+    }
 
+    .resume-btn:hover,
+    .GitHub-btn:hover,
+    .Linkdln-btn:hover {
+        background-color: #055183;
+        animation: pulse 2s infinite;
+    }
+
+    .myButton {
+        box-shadow: 7px 5px 17px 1px #42237d;
+        background: linear-gradient(to bottom, #601baf 5%, #890add 100%);
+        width: 100%; /* Full width for better mobile usability */
+        max-width: 10em; /* Maintain max width */
+    }
+
+    .myButton:hover {
+        background: linear-gradient(to bottom, #8b0be0 5%, #be8ef5 100%);
+        background-color: #5f0c96;
+        animation: pulse 2s infinite;
+    }
+
+    .myButton:active {
+        position: relative;
+        top: 1px;
+    }
+
+    h1 {
+        color: #2c3e50;
+        margin-bottom: 15px; /* Slightly reduced margin */
+        font-size: 2.5em; /* Smaller font size for mobile */
+    }
+
+    h3 {
+        color: #2c3e50;
+        font-size: 1.2em; /* Adjust for mobile */
+    }
+
+    * {
+        font-family: Arial, sans-serif;
+    }
+
+}
