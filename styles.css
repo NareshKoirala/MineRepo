@@ -123,6 +123,7 @@ span {
     border-radius: 50%;
     box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1);
     animation: animate 3s linear infinite;
+    animation-play-state: running;
 }
 
 span::before {
@@ -234,70 +235,26 @@ span:nth-child(10) {
     animation-duration: 2.25s;
 }
 
-@media only screen and (max-width: 600px) {
-    body {
-        display: flex;
-        background: radial-gradient(ellipse at bottom, #203c64 0%, #02082c 100%);
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        margin: 0;
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+    .header h1 {
+        font-size: 2em;
+    }
+    body{
+        overflow: scroll;
     }
 
-
-    .resume-btn,
-    .Linkdln-btn,
-    .GitHub-btn,
-    .myButton {
-        display: inline-block;
-        padding: 12px 25px; /* Slightly smaller padding for mobile */
-        padding-bottom: 15px;
-        background-color: #6c07df;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 1em; /* Slightly smaller font size */
-        transition: background-color 0.3s;
+    span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 4px;
+        height: 4px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1);
+        animation-play-state: paused;
     }
-
-    .resume-btn:hover,
-    .GitHub-btn:hover,
-    .Linkdln-btn:hover {
-        background-color: #055183;
-        animation: pulse 2s infinite;
-    }
-
-    .myButton {
-        box-shadow: 7px 5px 17px 1px #42237d;
-        background: linear-gradient(to bottom, #601baf 5%, #890add 100%);
-        width: 100%; /* Full width for better mobile usability */
-        max-width: 10em; /* Maintain max width */
-    }
-
-    .myButton:hover {
-        background: linear-gradient(to bottom, #8b0be0 5%, #be8ef5 100%);
-        background-color: #5f0c96;
-        animation: pulse 2s infinite;
-    }
-
-    .myButton:active {
-        position: relative;
-        top: 1px;
-    }
-
-    h1 {
-        color: #2c3e50;
-        margin-bottom: 15px; /* Slightly reduced margin */
-        font-size: 2.5em; /* Smaller font size for mobile */
-    }
-
-    h3 {
-        color: #2c3e50;
-        font-size: 1.2em; /* Adjust for mobile */
-    }
-
-    * {
-        font-family: Arial, sans-serif;
-    }
-
 }

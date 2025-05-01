@@ -3,15 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="script.js"></script>
-    <title>SpO2 PCB</title>
+    <title>Naresh Koirala - SpO2 Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            color: #1a1a1a;
+            line-height: 1.7;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background: #2d3436;
+            color: #ffffff;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.85;
+        }
+
+        .nav-outline {
+            background: #f1f2f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .nav-outline h2 {
+            color: #2d3436;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .nav-outline ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-outline a {
+            text-decoration: none;
+            color: #0984e3;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: #ffffff;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .ics a:hover {
+            background: #74b9ff;
+            transform: scale(1.05);
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #2d3436;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            border-left: 4px solid #0984e3;
+            padding-left: 10px;
+        }
+
+        .section p {
+            font-size: 1.1em;
+            color: #4b5e7e;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            list-style: none;
+        }
+
+        .skills-list li {
+            background: #0984e3;
+            color: #ffffff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.95em;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #2d3436;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #636e72;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .nav-outline a {
+                font-size: 0.9em;
+                padding: 6px 12px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>Naresh Koirala</h1>
+            <p>SpO2 Monitoring Project</p>
+            <p>PCB Design & Software Integration</p>
+        </div>
 
-    
-    <a href="../index.html" class="back-btn">Back to Home</a>
-    
+        <div class="nav-outline">
+            <h2>Outline</h2>
+            <ul>
+                <li><a href="#summary">Summary</a></li>
+                <li><a href="#tools">Tools Used</a></li>
+                <li><a href="#breadboard">Breadboard Design</a></li>
+                <li><a href="#kicad">KiCad Design</a></li>
+                <li><a href="#software">Software Implementation</a></li>
+                <li><a href="#soldering">Soldering/Desoldering</a></li>
+            </ul>
+        </div>
+
+        <div id="summary" class="section">
+            <h2>Summary</h2>
+            <p>
+                Initiated the project with a breadboard prototype to verify the functionality of critical components, utilizing I2C communication via SDL and SDA pins to connect an OLED display and a MAX30100 sensor in a bus configuration. A 255-bit loop test was implemented, leveraging pre-existing GitHub libraries for the OLED and sensor, to validate component communication with the microcontroller (MCU). The test confirmed successful I2C address recognition, verifying the operational integrity of the components.
+            </p>
+            <br>
+            <p>
+                Subsequently, a schematic was developed in KiCad, optimizing the breadboard design by streamlining the required pin connections. This led to the iterative design of a dual-power-rail PCB, incorporating a 9V battery rail and a USB-powered rail with an ST-LINK interface for debugging. The PCB includes a robust power monitoring system, featuring four LEDs—two per rail—to provide visual confirmation of power status at multiple checkpoints, ensuring reliable operation across both power sources. After completing the schematic, multiple PCB design iterations were evaluated, culminating in a finalized design. The final PCB layout was then submitted to JLCPCB for fabrication.
+            </p>
+        </div>
+
+        <div id="tools" class="section">
+            <h2>Tools Used</h2>
+            <ul class="skills-list">
+                <li>STM-Cube IDE (Programming)</li>
+                <li>HAL</li>
+                <li>C</li>
+                <li>KiCad 9.0</li>
+                <li>PHP</li>
+                <li>KiCad</li>
+                <li>SSD1309 (OLED)</li>
+                <li>MAX30100 Sensor</li>
+                <li>STM32G0</li>
+            </ul>
+        </div>
+
+        <div id="breadboard" class="section">
+            <h2>Breadboard Design</h2>
+            <p>
+                The initial breadboard prototype was designed to test the core functionality of the SpO2 monitoring system, focusing on I2C communication between the MCU, OLED display, and MAX30100 sensor.
+            </p>
+        </div>
+
+        <div id="kicad" class="section">
+            <h2>KiCad (Schematic + PCB) Design</h2>
+            <p>
+                The KiCad schematic optimized the breadboard layout, reducing pin connections and enabling a dual-power-rail PCB design with robust power monitoring and debugging capabilities.
+            </p>
+        </div>
+
+        <div id="software" class="section">
+            <h2>Software Implementation</h2>
+            <p>
+                The software was developed using STM-Cube IDE, leveraging HAL and C to manage I2C communication and sensor data processing, with PHP used for additional functionality.
+            </p>
+        </div>
+
+        <div id="soldering" class="section">
+            <h2>Soldering/Desoldering</h2>
+            <p>
+                The final PCB assembly involved precise soldering of components, with desoldering techniques applied during iterations to refine the design and ensure reliability.
+            </p>
+        </div>
+
+        <a href="../index.html" class="back-btn">Back to Home</a>
+    </div>
 </body>
 </html>
