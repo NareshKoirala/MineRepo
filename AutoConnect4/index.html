@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Connect 4.0</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/script.js"></script>
+</head>
+<body>
+    <div class="MainGrid">
+        <div class="Container">
+            <h1>Connect 4.0 Game</h1>
+        </div>
+        <div class="Container">
+            <div class="item">
+                <div id="menu">
+                    <h2>Select Game Mode</h2>
+                    <select id="game-mode">
+                        <option value="person">VS Person</option>
+                        <option value="c_easy">VS Computer (Easy)</option>
+                        <option value="c_medium">VS Computer (Medium)</option>
+                        <option value="c_hard">VS Computer (Hard)</option>
+                    </select>
+                    <div id="computer-options" style="display: none;">
+                        <h3>Play On:</h3>
+                        <select id="play-on">
+                            <option value="computer">Computer</option>
+                            <option value="hardware">Hardware</option>
+                        </select>
+                    </div>
+                    <button id="start-game">Start Game</button>
+                </div>
+                <div id="game-area" style="display: none;">
+                    <div id="status-bar">
+                        <p id="connection-status">Connection Status: Disconnected</p>
+                        <p id="motor-status">Motor Status: Idle</p>
+                        <p id="current-player">Current Player: <span class="player-color"></span></p>
+                        <p id="player-info">Player 1: <span class="Yellow p1"></span> | Player 2: <span class="Red p2"></span></p>
+                    </div>
+                    <table id="game"></table>
+                </div>
+            </div>
+        </div>
+        <div class="Container">
+            <p>Made by: Adrian Baira, Naresh Koirala</p>
+            <p id="Modified"></p>
+        </div>
+    </div>
+</body>
+</html>

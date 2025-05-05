@@ -1,0 +1,164 @@
+body {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    background: lightblue;
+    padding: 10% 10%;
+}
+
+.MainGrid {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    min-height: 100vh; 
+    max-width: 800px;
+    margin: 0 auto; 
+}
+
+.Container {
+    grid-column: 2/3; 
+    border: solid;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    width: 100%; 
+    max-width: 600px;
+}
+
+.Container h1 {
+    color: #010101;
+    font-size: 2.5em;
+}
+
+#menu {
+    margin-bottom: 20px;
+}
+
+#menu h2, #menu h3 {
+    color: #333;
+    margin: 10px 0;
+}
+
+#game-mode, #play-on {
+    padding: 5px;
+    font-size: 1em;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#start-game {
+    background: #e13623;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#start-game:hover {
+    background: #c0392b;
+}
+
+#status-bar {
+    margin-bottom: 10px;
+}
+
+#connection-status {
+    color: #666;
+    font-weight: bold;
+}
+
+#motor-status {
+    color: #666;
+    font-weight: bold;
+}
+
+#current-player {
+    color: #333;
+    font-weight: bold;
+}
+
+#current-player .player-color {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+#player-info span {
+    vertical-align: middle;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    background-color: #1db7e6;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+th {
+    background-color: #1c75b0;
+    font-weight: bold;
+}
+
+th button {
+    background: #e13623;
+    border: none;
+    padding: 5px 12px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;  /* Ensure cursor indicates clickable when enabled */
+}
+
+th button:disabled {
+    background: #b0b0b0;  /* Gray out disabled buttons */
+    cursor: not-allowed;  /* Indicate not clickable */
+}
+
+th button:hover:not(:disabled) {
+    background: #c0392b;
+}
+
+.Yellow {
+    height: 50px;
+    width: 50px;
+    background-color: #f1c40f;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.Red {
+    height: 50px;
+    width: 50px;
+    background-color: #e74c3c;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.Grey {
+    height: 50px;
+    width: 50px;
+    background-color: whitesmoke;
+    border-radius: 50%;
+    display: inline-block;
+    border: 2px solid black;
+    margin: 0 auto;
+}
+
+.Grey:hover {
+    background-color: white;
+}
+
+p {
+    color: black;
+    font-size: 1.1em;
+    margin: 10px 0;
+}
