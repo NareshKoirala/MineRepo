@@ -184,10 +184,61 @@ function easy_computer_move() {
     return available_cols[rando_pos];
 }
 
+/*
+    11 = 20
+    22 = 20 * 2
+    111 = 30 * 3
+    222 = 30 * 4
+*/
+
+function highPrioty_move(blocking, winning, pl) {
+    let best_moves = [];
+
+    for(let i = 0; i < winning_move.length; i++){
+        const move = winning_move[i];
+
+        let  = 0;
+        let pos = [];
+
+        if(move.horizontal[0] !== 0){
+
+        }
+        if(move.vertical[0] !== 0){
+            
+        }
+        if(move.leftDiagonal[0] !== 0){
+            
+        }
+        if(move.rightDiagonal[0] !== 0){
+            
+        }
+
+
+        if(blocking){
+            if(pl !== move.player){
+                best_moves.push()
+            }
+        }
+        if(winning){
+            if(pl === move.player){
+
+            }
+        }
+    }
+
+    return best_moves;
+}
+
 function medium_computer_move(pl) {
     let available_cols = [];
     let index = -1;
     let max_weight = 0;
+
+    move_checker();
+
+    if(winning_move.length !== 0){
+        available_cols = highPrioty_move(true, false, pl);
+    }
 
     for (let i = 0; i < winning_move.length; i++) {
 
@@ -249,7 +300,6 @@ function hard_computer_move() {
 }
 
 function check_winner() {
-    winning_move = []
 
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
@@ -275,17 +325,59 @@ function check_line(row, col, delta_row, delta_col) {
         let c = col + i * delta_col;
 
         if (r < 0 || r >= rows || c < 0 || c >= cols || board[r][c] !== player_current) {
-            if (i >= 2 && r >= 0 && c >= 0 && r < rows && c < cols && board[r][c] === 0) {
-                let save = [player_current, 10 * i, i - 1, r, c];
-                winning_move.push(save);
-            }
             return false;
         }
     }
-
     return true;
 }
 
-function move_checker() {
 
+function check_Line_return(row, col, delta_row, delta_col) {
+    let player_current = board[row][col]
+
+    for (let i = 1; i < 4; i++) {
+        let r = row + i * delta_row;
+        let c = col + i * delta_col;
+
+        if (r < 0 || r >= rows || c < 0 || c >= cols) {
+            return [0, -1, -1];
+        }
+
+        if (board[r][c] !== player_current) {
+            if (i >= 2 && board[r][c] === 0) {
+                return [i * 10, r, c];
+            }
+            return [0, -1, -1];
+        }
+    }
+    return [0, -1, -1];
+}
+
+function move_checker() {
+    winning_move = [];
+
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            let player = board[r][c];
+
+            if (board[r][c] !== 0) {
+                let horizontal = check_Line_return(r, c, 0, 1);
+                let vertical = check_Line_return(r, c, 1, 0);
+                let right_dia = check_Line_return(r, c, 1, 1);
+                let left_dia = check_Line_return(r, c, 1, -1);
+
+                if (horizontal || vertical || left_dia || right_dia) {
+                    let obj_move = {
+                        player: player,
+                        startPos: [r, c],
+                        horizontal: horizontal,
+                        vertical: vertical,
+                        leftDiagonal: left_dia,
+                        rightDiagonal: right_dia
+                    };
+                    winning_move.push(obj_move);
+                }
+            }
+        }
+    }
 }
