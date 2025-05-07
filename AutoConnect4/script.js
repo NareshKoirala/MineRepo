@@ -191,84 +191,71 @@ function easy_computer_move() {
     222 = 30 * 4
 */
 
-function highPrioty_move(blocking, winning, pl) {
+function highPrioty_moves(blocking, winning, pl) {
     let best_moves = [];
 
     for(let i = 0; i < winning_move.length; i++){
         const move = winning_move[i];
 
-        let weight = [];
-        let pos = [];
+        let weight = 0;
+        let pos = [0, 0];
 
-        if(move.horizontal[0] !== 0){
-            weight.push(move.horizontal[0]);
-            pos.push(move.horizontal[1]);
-            pos.push(move.horizontal[2]);
+        if(move.horizontal[0] !== 0 && weight <= move.horizontal[0]){
+            weight = move.horizontal[0];
+            pos[0] = move.horizontal[1];
+            pos[1] = move.horizontal[2];
         }
-        if(move.vertical[0] !== 0){
-            weight.push(move.vertical[0]);
-            pos.push(move.vertical[1]);
-            pos.push(move.vertical[2]);
+        if(move.vertical[0] !== 0 && weight <= move.vertical[0] && 5 - move.vertical[1] === rows_count[move.vertical[2]]){
+            weight = move.vertical[0];
+            pos[0] = move.vertical[1];
+            pos[1] = move.vertical[2];
         }
-        if(move.leftDiagonal[0] !== 0){
-            weight.push(move.leftDiagonal[0]);
-            pos.push(move.leftDiagonal[1]);
-            pos.push(move.leftDiagonal[2]);
+        if(move.leftDiagonal[0] !== 0 && weight <= move.leftDiagonal[0] && 5 - move.leftDiagonal[1] === rows_count[move.leftDiagonal[2]]){
+            weight = move.leftDiagonal[0];
+            pos[0] = move.leftDiagonal[1];
+            pos[1] = move.leftDiagonal[2];
         }
-        if(move.rightDiagonal[0] !== 0){
-            weight.push(move.rightDiagonal[0]);
-            pos.push(move.rightDiagonal[1]);
-            pos.push(move.rightDiagonal[2]);
+        if(move.rightDiagonal[0] !== 0 && weight <= move.rightDiagonal[0] && 5 - move.rightDiagonal[1] === rows_count[move.rightDiagonal[2]]){
+            weight = move.rightDiagonal[0];
+            pos[0] = move.rightDiagonal[1];
+            pos[1] = move.rightDiagonal[2];
         }
-
-        
 
         if(blocking){
             if(pl !== move.player){
-                best_moves.push();
+                let multipler = weight === 20 ? 1 : 3;
+                best_moves.push([weight * multipler, pos]);
             }
         }
         if(winning){
             if(pl === move.player){
-                best_moves.push();
+                let multipler = weight === 20 ? 2 : 4;
+                best_moves.push([weight * multipler, pos]);
             }
         }
     }
-
     return best_moves;
 }
 
 function medium_computer_move(pl) {
     let available_cols = [];
-    let index = -1;
+    let index = [];
     let max_weight = 0;
 
     move_checker();
 
     if(winning_move.length !== 0){
-        available_cols = highPrioty_move(true, false, pl);
+        available_cols = highPrioty_moves(true, false, pl);
     }
-
-    for (let i = 0; i < winning_move.length; i++) {
-
-        let move = winning_move[i];
-        let r = move[3];
-        let c = move[4];
-
-        if (pl !== move[0] && max_weight <= move[1] && rows_count[c] === rows - r) {
-            max_weight = move[1];
-            available_cols.push(c);
-            index = available_cols.length;
-        }
-    }
-
-    // console.log(available_cols);
-    // console.log(winning_move);
-    // console.log(rows_count);
-    // console.log("Max_weight: " + max_weight + ", index: " + index);
 
     if (available_cols.length === 0) {
         return easy_computer_move();
+    }
+    else if(available_cols.length > 0 && available_cols.length < 2){
+
+    }
+    else{
+
     }
 
 
