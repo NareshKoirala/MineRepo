@@ -197,31 +197,40 @@ function highPrioty_move(blocking, winning, pl) {
     for(let i = 0; i < winning_move.length; i++){
         const move = winning_move[i];
 
-        let  = 0;
+        let weight = [];
         let pos = [];
 
         if(move.horizontal[0] !== 0){
-
+            weight.push(move.horizontal[0]);
+            pos.push(move.horizontal[1]);
+            pos.push(move.horizontal[2]);
         }
         if(move.vertical[0] !== 0){
-            
+            weight.push(move.vertical[0]);
+            pos.push(move.vertical[1]);
+            pos.push(move.vertical[2]);
         }
         if(move.leftDiagonal[0] !== 0){
-            
+            weight.push(move.leftDiagonal[0]);
+            pos.push(move.leftDiagonal[1]);
+            pos.push(move.leftDiagonal[2]);
         }
         if(move.rightDiagonal[0] !== 0){
-            
+            weight.push(move.rightDiagonal[0]);
+            pos.push(move.rightDiagonal[1]);
+            pos.push(move.rightDiagonal[2]);
         }
 
+        
 
         if(blocking){
             if(pl !== move.player){
-                best_moves.push()
+                best_moves.push();
             }
         }
         if(winning){
             if(pl === move.player){
-
+                best_moves.push();
             }
         }
     }
