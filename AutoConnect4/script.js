@@ -6,8 +6,8 @@ let movePending = false;
 
 let gameStart = false;
 
-let rows = 6;
-let cols = 7;
+const rows = 6;
+const cols = 7;
 let board = new Array(rows);
 let winning_move = [];
 
@@ -146,6 +146,7 @@ function MakeBoard() {
             const div = document.createElement("div");
             div.classList.add("Grey");
             div.id = `${i}${j}`;
+            div.textContent = `${i}${j}`; // Add label
             td.appendChild(div);
             tr.appendChild(td);
         }
@@ -190,16 +191,21 @@ function medium_computer_move(pl) {
 
     for (let i = 0; i < winning_move.length; i++) {
 
-        if (pl !== winning_move[i][0] && max_weight <= winning_move[i][1] && rows_count[winning_move[i][4]] === winning_move[i][3]) {
-            max_weight = winning_move[i][1];
-            available_cols.push(winning_move[i][4]);
+        let move = winning_move[i];
+        let r = move[3];
+        let c = move[4];
+
+        if (pl !== move[0] && max_weight <= move[1] && rows_count[c] === rows - r) {
+            max_weight = move[1];
+            available_cols.push(c);
             index = available_cols.length;
         }
     }
 
-    console.log(available_cols);
-    console.log(winning_move);
-    console.log("Max_weight: " + max_weight + ", index: " + index);
+    // console.log(available_cols);
+    // console.log(winning_move);
+    // console.log(rows_count);
+    // console.log("Max_weight: " + max_weight + ", index: " + index);
 
     if (available_cols.length === 0) {
         return easy_computer_move();
@@ -212,15 +218,29 @@ function medium_computer_move(pl) {
 
 function hard_computer_move() {
     let available_cols = [];
+    let index = -1;
+    let max_weight = 0;
 
-    for (let c = 0; c < cols; c++) {
-        if (valid_col_move(c)) {
+    for (let i = 0; i < winning_move.length; i++) {
+
+        let move = winning_move[i];
+        let r = move[3];
+        let c = move[4];
+
+        if (pl !== move[0] && max_weight <= move[1] && rows_count[c] === rows - r) {
+            max_weight = move[1];
             available_cols.push(c);
+            index = available_cols.length;
         }
     }
 
+    // console.log(available_cols);
+    // console.log(winning_move);
+    // console.log(rows_count);
+    // console.log("Max_weight: " + max_weight + ", index: " + index);
+
     if (available_cols.length === 0) {
-        return -1;
+        return easy_computer_move();
     }
 
 
@@ -250,7 +270,6 @@ function check_winner() {
 function check_line(row, col, delta_row, delta_col) {
     let player_current = board[row][col]
 
-
     for (let i = 1; i < 4; i++) {
         let r = row + i * delta_row;
         let c = col + i * delta_col;
@@ -265,4 +284,8 @@ function check_line(row, col, delta_row, delta_col) {
     }
 
     return true;
+}
+
+function move_checker() {
+
 }
