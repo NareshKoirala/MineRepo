@@ -1,164 +1,186 @@
 body {
     text-align: center;
-    font-family: 'Arial', sans-serif;
-    background: lightblue;
-    padding: 10% 10%;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #4a17c0, #acb6e5);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .MainGrid {
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    min-height: 100vh; 
-    max-width: 800px;
-    margin: 0 auto; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 900px;
+    margin: 0 auto;
+    flex: 1;
 }
 
 .Container {
-    grid-column: 2/3; 
-    border: solid;
-    padding: 20px;
-    background: white;
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 25px;
     margin-bottom: 20px;
-    width: 100%; 
-    max-width: 600px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
 }
 
-.Container h1 {
-    color: #010101;
-    font-size: 2.5em;
+.Container:hover {
+    transform: translateY(-5px);
 }
 
-#menu {
-    margin-bottom: 20px;
+.Container.header h1 {
+    color: #2c3e50;
+    font-size: 2.8em;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 #menu h2, #menu h3 {
-    color: #333;
-    margin: 10px 0;
+    color: #34495e;
+    margin: 15px 0;
+    font-weight: 700;
 }
 
 #game-mode, #play-on {
-    padding: 5px;
-    font-size: 1em;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    border: 1px solid #bdc3c7;
+    background: #ecf0f1;
+    width: 100%;
+    max-width: 300px;
+    margin: 10px 0;
+    transition: border-color 0.3s ease;
 }
 
-#start-game {
-    background: #e13623;
+#game-mode:focus, #play-on:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+#start-game, #reset-game {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
     border: none;
-    padding: 10px 20px;
+    padding: 12px 25px;
     color: white;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 1.1em;
     cursor: pointer;
-    margin-top: 10px;
+    margin: 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
-#start-game:hover {
-    background: #c0392b;
+#start-game:hover, #reset-game:hover {
+    background: linear-gradient(45deg, #c0392b, #a93226);
+    transform: scale(1.05);
 }
 
 #status-bar {
-    margin-bottom: 10px;
+    background: rgba(236, 240, 241, 0.8);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-#connection-status {
-    color: #666;
-    font-weight: bold;
+#current-player, #player-info {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.2em;
+    margin: 5px;
 }
 
-#motor-status {
-    color: #666;
-    font-weight: bold;
-}
-
-#current-player {
-    color: #333;
-    font-weight: bold;
-}
-
-#current-player .player-color {
+#current-player .player-color, #player-info span {
     vertical-align: middle;
-    margin-right: 5px;
-}
-
-#player-info span {
-    vertical-align: middle;
+    margin-right: 8px;
 }
 
 table {
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
     border-collapse: collapse;
-    background-color: #1db7e6;
-    border-radius: 10px;
+    background: #3498db;
+    border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 100%; /* Ensure table fits container */
+    max-width: 100%; /* Prevent overflow */
 }
 
 th, td {
-    border: 1px solid black;
-    padding: 5px;
+    border: 2px solid #2980b9;
+    padding: 6px; /* Reduced padding for mobile */
 }
 
 th {
-    background-color: #1c75b0;
-    font-weight: bold;
+    background: #2980b9;
+    font-weight: 700;
+    color: white;
 }
 
 th button {
-    background: #e13623;
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
     border: none;
-    padding: 5px 12px;
+    padding: 8px 15px;
     color: white;
-    border-radius: 5px;
-    cursor: pointer;  /* Ensure cursor indicates clickable when enabled */
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 th button:disabled {
-    background: #b0b0b0;  /* Gray out disabled buttons */
-    cursor: not-allowed;  /* Indicate not clickable */
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
 }
 
 th button:hover:not(:disabled) {
-    background: #c0392b;
+    background: linear-gradient(45deg, #c0392b, #a93226);
+    transform: scale(1.05);
+}
+
+.Yellow, .Red, .Grey {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .Yellow {
-    height: 50px;
-    width: 50px;
     background-color: #f1c40f;
-    border-radius: 50%;
-    display: inline-block;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .Red {
-    height: 50px;
-    width: 50px;
     background-color: #e74c3c;
-    border-radius: 50%;
-    display: inline-block;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .Grey {
-    height: 50px;
-    width: 50px;
-    background-color: whitesmoke;
-    border-radius: 50%;
-    display: inline-block;
-    border: 2px solid black;
-    margin: 0 auto;
+    background-color: #ecf0f1;
+    border: 2px solid #bdc3c7;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .Grey:hover {
-    background-color: white;
+    background-color: #dfe6e9;
+    transform: scale(1.1);
 }
 
-p {
-    color: black;
-    font-size: 1.1em;
-    margin: 10px 0;
+footer {
+    margin-top: auto;
+    padding: 10px;
+    color: #34495e;
+    font-size: 1em;
 }

@@ -70,10 +70,10 @@ def hard_computer_move(player):
                 available_cols.append(c)
                 weights.append(on + 50)
     
-    for i in weights:
+    # for i in weights:
 
 
-    WINNIG.clear()
+    # WINNIG.clear()
 
     if len(available_cols) == 0:
         return easy_computer_move()

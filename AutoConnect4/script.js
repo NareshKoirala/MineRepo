@@ -1,190 +1,135 @@
 // Define global variables outside the ready block
-let picoConnected = false;
-let myList = [0, 0, 0, 0, 0, 0, 0];
+let rows_count = [0, 0, 0, 0, 0, 0, 0];
 let gameMode = null;
-let playOn = null;
-let currentPlayer = 1;
+let currentPlayer = Math.floor(Math.random() * 2) + 1;
 let movePending = false;
-let lastMoveTime = 0;
-let motorRunning = false;
+
+let gameStart = false;
+
+let rows = 6;
+let cols = 7;
+let board = new Array(rows);
+let winning_move = [];
 
 $(document).ready(() => {
-    $("#game-mode").change(function() {
-        const mode = $(this).val();
-        $("#computer-options").toggle(mode.startsWith("c_"));
-    });
 
-    $("#start-game").click(function() {
+    updateCurrentPlayer();
+
+    $("#start-game").click(function () {
         gameMode = $("#game-mode").val();
-        playOn = $("#play-on").val();
-        if (!gameMode || !playOn) {
-            alert("Please select both game mode and play option!");
+
+        if (!gameMode) {
+            alert("Please select game mode option!");
             return;
         }
+
+        if(gameMode !== "person" && currentPlayer === 2){
+            movePending = true;
+        }
+
         $("#menu").hide();
         $("#game-area").show();
         MakeBoard();
-        lastModified();
-        updateConnectionStatus();
         updateCurrentPlayer();
-        updateButtonState();
-        updateMotorStatus();
-
-        fetch(`/set-mode?mode=${gameMode}&playOn=${playOn}`)
-            .then(response => {
-                if (!response.ok) throw new Error("Failed to set game mode");
-                return response.json();
-            })
-            .then(data => {
-                if (!data.success) {
-                    alert("Failed to set game mode!");
-                    resetGame();
-                }
-            })
-            .catch(error => {
-                console.log("Error setting game mode:", error);
-                alert("Error communicating with ESP32. Please try again.");
-                resetGame();
-            });
+        gameStart = true;
     });
 
-    setInterval(checkConnectionStatus, 500);
-    setInterval(checkGameUpdates, 500);  // Poll for game updates
+    setInterval(computer_move, 500);
 
     $("#game").on("click", "button", (e) => {
-        if (!picoConnected && playOn === "hardware") {
-            alert("Pico not connected! Game is disabled.");
+        if(gameMode !== "person" && currentPlayer === 2) {
+            alert("Computer Move");
             return;
         }
 
         if (movePending) {
-            alert("Waiting for the other player's move!");
+            alert("Waiting for the computers move!");
             return;
         }
 
         let column = parseInt(e.target.id);
 
-        if (myList[column] >= 6) {
+        if (!valid_col_move(column)) {
             alert("Column is full!");
             return;
         }
 
-        
-        const buttons = $("#game button");        
-        buttons.prop("disabled", true).css("opacity", "0.5");
-
-        movePending = true;
-        motorRunning = true;
         play(currentPlayer, column);
-        currentPlayer = 1
-        updateMotorStatus();
-        // updateButtonState();
 
-        fetch(`/move?column=${column}`)
-            .then(response => {
-                if (!response.ok) throw new Error("Network response was not ok");
-                return response.json();
-            })
-            .then(data => {
-                if (!data.success) {
-                    alert("Failed to process move!");
-                    movePending = false;
-                    motorRunning = false;
-                    updateMotorStatus();
-                }
-            })
-            .catch(error => {
-                console.log("Error sending move:", error);
-                alert("Error communicating with ESP32!");
-                movePending = false;
-                motorRunning = false;
-                updateMotorStatus();
-            });
+        currentPlayer = currentPlayer === 1 ? 2 : 3 - currentPlayer;
+        updateCurrentPlayer();
+
+        check_winner_main();
+
+        if (gameMode != "person") {
+            movePending = true;
+        }
     });
 });
 
+function check_winner_main() {
+    if (gameStart) {
+        let winner = check_winner();
+        if (winner !== 0) {
+            alert("Player " + winner + " WON!!!!!!!!!");
+            resetGame();
+        }
+    }
+}
+
+function computer_move() {
+    if (movePending) {
+        let computerColumn = -1;
+
+        if (gameMode === "c_easy") {
+            computerColumn = easy_computer_move();
+        }
+        else if (gameMode === "c_medium") {
+            computerColumn = medium_computer_move(currentPlayer);
+        }
+        else {
+            computerColumn = hard_computer_move(currentPlayer);
+        }
+
+        if (computerColumn !== -1) {
+            play(currentPlayer, computerColumn);
+            currentPlayer = currentPlayer === 1 ? 2 : 3 - currentPlayer;
+            updateCurrentPlayer();
+
+            check_winner_main();
+            movePending = false;
+        }
+    }
+}
+
 function play(player, column) {
-    for (let row = 5; row >= 0; row--) {
+
+    board[rows - 1 - rows_count[column]][column] = player;
+
+    for (let row = rows - 1; row >= 0; row--) {
         const cell = $(`#${row}${column}`);
         if (cell.hasClass("Grey")) {
             cell.removeClass("Grey").addClass(player === 1 ? "Yellow" : "Red");
             break;
         }
     }
-    myList[column] = Math.min(myList[column] + 1, 6);
-    updateCurrentPlayer();
-    updateButtonState();
-}
-
-function checkGameUpdates() {
-    fetch('/game-update')
-        .then(response => {
-            if (!response.ok) throw new Error("Failed to fetch game update");
-            return response.json();
-        })
-        .then(data => {
-            if (data.move) {
-                play(currentPlayer, data.move.column);
-                movePending = false;
-                motorRunning = true;
-                // currentPlayer = 2
-                updateMotorStatus();
-            }
-            if (data.winner) {
-                alert(`Player ${data.winner} wins!`);
-                resetGame();
-            }
-            if (data.columnFull) {
-                alert("Column is full!");
-                movePending = false;
-                motorRunning = false;
-                updateMotorStatus();
-            }
-            if (data.motorStatus) {
-                motorRunning = data.motorStatus === "running";
-                if (!motorRunning) {
-                    movePending = false;
-                }
-                updateMotorStatus();
-            }
-            if (data.currentPlayer) {  // Handle currentPlayer updates from ESP32
-                currentPlayer = parseInt(data.currentPlayer);
-                updateCurrentPlayer();
-                updateButtonState();
-            }
-        })
-        .catch(error => {
-            console.log("Error checking game updates:", error);
-        });
+    rows_count[column] = Math.min(rows_count[column] + 1, 6);
 }
 
 function resetGame() {
-    // myList = [0, 0, 0, 0, 0, 0, 0];
-    // currentPlayer = 1;
-    // movePending = false;
-    // lastMoveTime = 0;
-    // motorRunning = false;
-    // $("#game-area").hide();
-    // $("#menu").show();
-    // $("#game").empty();
-    // $(".Yellow, .Red").removeClass("Yellow Red").addClass("Grey");
-    // $(".p1").addClass("Yellow");
-    // $(".p2").addClass("Red");
-    // updateCurrentPlayer();
-    // updateButtonState();
-    // updateMotorStatus();
     window.location.reload();
 }
 
-function lastModified() {
-    $("#Modified").text(`Last Modified: ${document.lastModified}`);
-}
-
 function MakeBoard() {
-    const rows = 7, columns = 7;
     let table = $("#game").empty()[0];
+
+    for (let r = 0; r < rows; r++) {
+        board[r] = new Array(cols).fill(0);
+    }
+
     const headerRow = document.createElement("tr");
-    for (let i = 0; i < columns; i++) {
+
+    for (let i = 0; i < cols; i++) {
         const th = document.createElement("th");
         const button = document.createElement("button");
         button.textContent = "Place Token";
@@ -194,9 +139,9 @@ function MakeBoard() {
     }
     table.appendChild(headerRow);
 
-    for (let i = 0; i < rows - 1; i++) {
+    for (let i = 0; i < rows; i++) {
         const tr = document.createElement("tr");
-        for (let j = 0; j < columns; j++) {
+        for (let j = 0; j < cols; j++) {
             const td = document.createElement("td");
             const div = document.createElement("div");
             div.classList.add("Grey");
@@ -206,62 +151,118 @@ function MakeBoard() {
         }
         table.appendChild(tr);
     }
-    updateButtonState();
-}
-
-function updateConnectionStatus() {
-    const statusElement = $("#connection-status");
-    if (statusElement.length) {
-        statusElement.text(`Connection Status: ${picoConnected ? "Connected" : "Disconnected"}`)
-            .css("color", picoConnected ? "#28a745" : "#dc3545");
-    }
-}
-
-function checkConnectionStatus() {
-    fetch('/status')
-        .then(response => {
-            if (!response.ok) throw new Error("Failed to fetch status");
-            return response.json();
-        })
-        .then(data => {
-            picoConnected = data.connected;
-            updateConnectionStatus();
-        })
-        .catch(error => {
-            console.log("Error checking status:", error);
-            picoConnected = false;
-            updateConnectionStatus();
-        });
 }
 
 function updateCurrentPlayer() {
     const playerElement = $("#current-player");
+
     if (playerElement.length) {
         playerElement.html(`Current Player: <span class="player-color ${currentPlayer === 1 ? 'Yellow' : 'Red'}"></span> Player ${currentPlayer}`);
     }
 }
 
-function updateButtonState() {
-    const buttons = $("#game button");
-    if (currentPlayer === 2) 
-    {
-        buttons.prop("disabled", false).css("opacity", "1");
-    } 
-    else 
-    {
-        buttons.prop("disabled", true).css("opacity", "0.5");
-    }
-
-    if (gameMode === "c_easy" && playOn === "hardware")
-    {
-        buttons.prop("disabled", true).css("opacity", "0.5");
-    }
+function valid_col_move(col) {
+    return board[0][col] == 0;
 }
 
-function updateMotorStatus() {
-    const motorElement = $("#motor-status");
-    if (motorElement.length) {
-        motorElement.text(`Motor Status: ${motorRunning ? "Running..." : "Idle"}`)
-            .css("color", motorRunning ? "#e74c3c" : "#666");
+function easy_computer_move() {
+    let available_cols = [];
+
+    for (let c = 0; c < cols; c++) {
+        if (valid_col_move(c)) {
+            available_cols.push(c);
+        }
     }
+
+    if (available_cols.length === 0) {
+        return -1;
+    }
+
+
+    let rando_pos = Math.floor(Math.random() * available_cols.length);
+    return available_cols[rando_pos];
+}
+
+function medium_computer_move(pl) {
+    let available_cols = [];
+    let index = -1;
+    let max_weight = 0;
+
+    for (let i = 0; i < winning_move.length; i++) {
+
+        if (pl !== winning_move[i][0] && max_weight <= winning_move[i][1] && rows_count[winning_move[i][4]] === winning_move[i][3]) {
+            max_weight = winning_move[i][1];
+            available_cols.push(winning_move[i][4]);
+            index = available_cols.length;
+        }
+    }
+
+    console.log(available_cols);
+    console.log(winning_move);
+    console.log("Max_weight: " + max_weight + ", index: " + index);
+
+    if (available_cols.length === 0) {
+        return easy_computer_move();
+    }
+
+
+    let rando_pos = Math.floor(Math.random() * available_cols.length);
+    return available_cols[rando_pos];
+}
+
+function hard_computer_move() {
+    let available_cols = [];
+
+    for (let c = 0; c < cols; c++) {
+        if (valid_col_move(c)) {
+            available_cols.push(c);
+        }
+    }
+
+    if (available_cols.length === 0) {
+        return -1;
+    }
+
+
+    let rando_pos = Math.floor(Math.random() * available_cols.length);
+    return available_cols[rando_pos];
+}
+
+function check_winner() {
+    winning_move = []
+
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (board[r][c] !== 0 && (
+                check_line(r, c, 1, 0) ||
+                check_line(r, c, 0, 1) ||
+                check_line(r, c, 1, 1) ||
+                check_line(r, c, 1, -1)
+            )) {
+                return board[r][c];
+            }
+        }
+    }
+
+    return 0;
+}
+
+function check_line(row, col, delta_row, delta_col) {
+    let player_current = board[row][col]
+
+
+    for (let i = 1; i < 4; i++) {
+        let r = row + i * delta_row;
+        let c = col + i * delta_col;
+
+        if (r < 0 || r >= rows || c < 0 || c >= cols || board[r][c] !== player_current) {
+            if (i >= 2 && r >= 0 && c >= 0 && r < rows && c < cols && board[r][c] === 0) {
+                let save = [player_current, 10 * i, i - 1, r, c];
+                winning_move.push(save);
+            }
+            return false;
+        }
+    }
+
+    return true;
 }
