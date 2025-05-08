@@ -198,40 +198,28 @@ function highPrioty_moves(blocking, winning, pl) {
         const move = winning_move[i];
 
         let weight = 0;
-        let pos = [0, 0];
+        let pos = 0;
 
-        if(move.horizontal[0] !== 0 && weight <= move.horizontal[0]){
+        if(move.horizontal[0] !== 0 && weight < move.horizontal[0]){
             weight = move.horizontal[0];
-            pos[0] = move.horizontal[1];
-            pos[1] = move.horizontal[2];
+            pos = move.horizontal[2];
         }
-        if(move.vertical[0] !== 0 && weight <= move.vertical[0] && 5 - move.vertical[1] === rows_count[move.vertical[2]]){
+        if(move.vertical[0] !== 0 && weight < move.vertical[0] && 5 - move.vertical[1] === rows_count[move.vertical[2]]){
             weight = move.vertical[0];
-            pos[0] = move.vertical[1];
-            pos[1] = move.vertical[2];
+            pos = move.vertical[2];
         }
-        if(move.leftDiagonal[0] !== 0 && weight <= move.leftDiagonal[0] && 5 - move.leftDiagonal[1] === rows_count[move.leftDiagonal[2]]){
+        if(move.leftDiagonal[0] !== 0 && weight < move.leftDiagonal[0] && 5 - move.leftDiagonal[1] === rows_count[move.leftDiagonal[2]]){
             weight = move.leftDiagonal[0];
-            pos[0] = move.leftDiagonal[1];
-            pos[1] = move.leftDiagonal[2];
+            pos = move.leftDiagonal[2];
         }
-        if(move.rightDiagonal[0] !== 0 && weight <= move.rightDiagonal[0] && 5 - move.rightDiagonal[1] === rows_count[move.rightDiagonal[2]]){
+        if(move.rightDiagonal[0] !== 0 && weight < move.rightDiagonal[0] && 5 - move.rightDiagonal[1] === rows_count[move.rightDiagonal[2]]){
             weight = move.rightDiagonal[0];
-            pos[0] = move.rightDiagonal[1];
-            pos[1] = move.rightDiagonal[2];
+            pos = move.rightDiagonal[2];
         }
 
-        if(blocking){
-            if(pl !== move.player){
-                let multipler = weight === 20 ? 1 : 3;
-                best_moves.push([weight * multipler, pos]);
-            }
-        }
-        if(winning){
-            if(pl === move.player){
-                let multipler = weight === 20 ? 2 : 4;
-                best_moves.push([weight * multipler, pos]);
-            }
+        if ((blocking && pl !== move.player) || (winning && pl === move.player)) {
+            const multiplier = weight === 20 ? (blocking ? 1 : 2) : (blocking ? 3 : 4);
+            best_moves.push([weight * multiplier, pos]);
         }
     }
     return best_moves;
@@ -239,7 +227,7 @@ function highPrioty_moves(blocking, winning, pl) {
 
 function medium_computer_move(pl) {
     let available_cols = [];
-    let index = [];
+    let col = [];
     let max_weight = 0;
 
     move_checker();
@@ -252,47 +240,47 @@ function medium_computer_move(pl) {
         return easy_computer_move();
     }
     else if(available_cols.length > 0 && available_cols.length < 2){
-
+        return available_cols[0][1]
     }
     else{
-
-    }
-
-
-    let rando_pos = Math.floor(Math.random() * available_cols.length);
-    return available_cols[rando_pos];
-}
-
-function hard_computer_move() {
-    let available_cols = [];
-    let index = -1;
-    let max_weight = 0;
-
-    for (let i = 0; i < winning_move.length; i++) {
-
-        let move = winning_move[i];
-        let r = move[3];
-        let c = move[4];
-
-        if (pl !== move[0] && max_weight <= move[1] && rows_count[c] === rows - r) {
-            max_weight = move[1];
-            available_cols.push(c);
-            index = available_cols.length;
+        for(let i = 0; i < available_cols.length; i++){
+            if(available_cols[i][0] >= max_weight){
+                col.push(available_cols[i][1])
+            }
         }
     }
 
-    // console.log(available_cols);
-    // console.log(winning_move);
-    // console.log(rows_count);
-    // console.log("Max_weight: " + max_weight + ", index: " + index);
+    let rando_pos = Math.floor(Math.random() * col.length);
+    return col[rando_pos];
+}
+
+function hard_computer_move(pl) {
+    let available_cols = [];
+    let col = [];
+    let max_weight = 0;
+
+    move_checker();
+
+    if(winning_move.length !== 0){
+        available_cols = highPrioty_moves(true, true, pl);
+    }
 
     if (available_cols.length === 0) {
         return easy_computer_move();
     }
-
-
-    let rando_pos = Math.floor(Math.random() * available_cols.length);
-    return available_cols[rando_pos];
+    else if(available_cols.length > 0 && available_cols.length < 2){
+        return available_cols[0][1]
+    }
+    else{
+        for(let i = 0; i < available_cols.length; i++){
+            if(available_cols[i][0] >= max_weight){
+                col.push(available_cols[i][1])
+            }
+        }
+    }
+    
+    let rando_pos = Math.floor(Math.random() * col.length);
+    return col[rando_pos];
 }
 
 function check_winner() {
