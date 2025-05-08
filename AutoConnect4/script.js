@@ -23,18 +23,17 @@ $(document).ready(() => {
             return;
         }
 
-        if(gameMode !== "person" && currentPlayer === 2){
-            movePending = true;
-        }
-
         $("#menu").hide();
         $("#game-area").show();
         MakeBoard();
         updateCurrentPlayer();
         gameStart = true;
-    });
 
-    setInterval(computer_move, 500);
+        if(gameMode !== "person" && currentPlayer === 2){
+            movePending = true;
+            computer_move();
+        }
+    });
 
     $("#game").on("click", "button", (e) => {
         if(gameMode !== "person" && currentPlayer === 2) {
@@ -63,6 +62,7 @@ $(document).ready(() => {
 
         if (gameMode != "person") {
             movePending = true;
+            computer_move();
         }
     });
 });
@@ -103,7 +103,6 @@ function computer_move() {
 }
 
 function play(player, column) {
-
     board[rows - 1 - rows_count[column]][column] = player;
 
     for (let row = rows - 1; row >= 0; row--) {
@@ -179,7 +178,6 @@ function easy_computer_move() {
         return -1;
     }
 
-
     let rando_pos = Math.floor(Math.random() * available_cols.length);
     return available_cols[rando_pos];
 }
@@ -200,19 +198,19 @@ function highPrioty_moves(blocking, winning, pl) {
         let weight = 0;
         let pos = 0;
 
-        if(move.horizontal[0] !== 0 && weight < move.horizontal[0]){
+        if(move.horizontal && move.horizontal[0] !== 0 && weight < move.horizontal[0]){
             weight = move.horizontal[0];
             pos = move.horizontal[2];
         }
-        if(move.vertical[0] !== 0 && weight < move.vertical[0] && 5 - move.vertical[1] === rows_count[move.vertical[2]]){
+        if(move.vertical && move.vertical[0] !== 0 && weight < move.vertical[0] && 5 - move.vertical[1] === rows_count[move.vertical[2]]){
             weight = move.vertical[0];
             pos = move.vertical[2];
         }
-        if(move.leftDiagonal[0] !== 0 && weight < move.leftDiagonal[0] && 5 - move.leftDiagonal[1] === rows_count[move.leftDiagonal[2]]){
+        if(move.leftDiagonal && move.leftDiagonal[0] !== 0 && weight < move.leftDiagonal[0] && 5 - move.leftDiagonal[1] === rows_count[move.leftDiagonal[2]]){
             weight = move.leftDiagonal[0];
             pos = move.leftDiagonal[2];
         }
-        if(move.rightDiagonal[0] !== 0 && weight < move.rightDiagonal[0] && 5 - move.rightDiagonal[1] === rows_count[move.rightDiagonal[2]]){
+        if(move.rightDiagonal && move.rightDiagonal[0] !== 0 && weight < move.rightDiagonal[0] && 5 - move.rightDiagonal[1] === rows_count[move.rightDiagonal[2]]){
             weight = move.rightDiagonal[0];
             pos = move.rightDiagonal[2];
         }
@@ -240,12 +238,13 @@ function medium_computer_move(pl) {
         return easy_computer_move();
     }
     else if(available_cols.length > 0 && available_cols.length < 2){
-        return available_cols[0][1]
+        return available_cols[0][1];
     }
     else{
         for(let i = 0; i < available_cols.length; i++){
             if(available_cols[i][0] >= max_weight){
-                col.push(available_cols[i][1])
+                max_weight = available_cols[i][0];
+                col.push(available_cols[i][1]);
             }
         }
     }
@@ -269,12 +268,13 @@ function hard_computer_move(pl) {
         return easy_computer_move();
     }
     else if(available_cols.length > 0 && available_cols.length < 2){
-        return available_cols[0][1]
+        return available_cols[0][1];
     }
     else{
         for(let i = 0; i < available_cols.length; i++){
             if(available_cols[i][0] >= max_weight){
-                col.push(available_cols[i][1])
+                max_weight = available_cols[i][0];
+                col.push(available_cols[i][1]);
             }
         }
     }
@@ -284,7 +284,6 @@ function hard_computer_move(pl) {
 }
 
 function check_winner() {
-
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             if (board[r][c] !== 0 && (
@@ -297,12 +296,11 @@ function check_winner() {
             }
         }
     }
-
     return 0;
 }
 
 function check_line(row, col, delta_row, delta_col) {
-    let player_current = board[row][col]
+    let player_current = board[row][col];
 
     for (let i = 1; i < 4; i++) {
         let r = row + i * delta_row;
@@ -315,26 +313,61 @@ function check_line(row, col, delta_row, delta_col) {
     return true;
 }
 
-
 function check_Line_return(row, col, delta_row, delta_col) {
-    let player_current = board[row][col]
+    let player_current = board[row][col];
+    let count = 1; // Count the starting position
 
     for (let i = 1; i < 4; i++) {
         let r = row + i * delta_row;
         let c = col + i * delta_col;
 
         if (r < 0 || r >= rows || c < 0 || c >= cols) {
-            return [0, -1, -1];
+            return false;
         }
 
-        if (board[r][c] !== player_current) {
-            if (i >= 2 && board[r][c] === 0) {
-                return [i * 10, r, c];
+        if (board[r][c] === player_current) {
+            count++;
+        } else if (board[r][c] === 0 && count >= 2) {
+            // Check if the empty position is playable (gravity)
+            if (r === rows - 1 || board[r + 1][c] !== 0) {
+                return [count * 10, r, c];
             }
-            return [0, -1, -1];
+            return false;
+        } else {
+            return false;
         }
     }
-    return [0, -1, -1];
+    return false;
+}
+
+function check_Full_Line(row, col, delta_row, delta_col) {
+    let forward = check_Line_return(row, col, delta_row, delta_col);
+    let backward = check_Line_return(row, col, -delta_row, -delta_col);
+
+    // If both directions have no valid move, return false
+    if (!forward && !backward) {
+        return false;
+    }
+
+    // If only one direction has a valid move, return it
+    if (forward && !backward) {
+        return forward;
+    }
+    if (!forward && backward) {
+        return backward;
+    }
+
+    // If both directions have valid moves, choose the one with the higher score
+    let forward_count = forward[0] / 10;
+    let backward_count = backward[0] / 10;
+    let total_count = forward_count + backward_count - 1; // Subtract 1 to avoid double-counting starting position
+
+    if (total_count >= 2) {
+        // Return the empty position from the direction with more pieces
+        return total_count === forward_count ? forward : backward;
+    }
+
+    return false;
 }
 
 function move_checker() {
@@ -345,10 +378,12 @@ function move_checker() {
             let player = board[r][c];
 
             if (board[r][c] !== 0) {
-                let horizontal = check_Line_return(r, c, 0, 1);
-                let vertical = check_Line_return(r, c, 1, 0);
-                let right_dia = check_Line_return(r, c, 1, 1);
-                let left_dia = check_Line_return(r, c, 1, -1);
+                let horizontal = check_Full_Line(r, c, 0, 1);   // Left and Right
+                let vertical = check_Full_Line(r, c, 1, 0);     // Up and Down
+                let right_dia = check_Full_Line(r, c, 1, 1);    // Down-right and Up-left
+                let left_dia = check_Full_Line(r, c, 1, -1);    // Down-left and Up-right
+
+                console.log(r + " " + c + " hori: " + JSON.stringify(horizontal) + " ver: " + JSON.stringify(vertical) + " ld: " + JSON.stringify(left_dia) + " rD: " + JSON.stringify(right_dia));
 
                 if (horizontal || vertical || left_dia || right_dia) {
                     let obj_move = {
