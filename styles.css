@@ -1,7 +1,7 @@
 body {
     display: flex;
     min-height: 100vmin;
-    background: radial-gradient(ellipse at bottom, #203c64 0%, #02082c 100%);
+    background: radial-gradient(ellipse at bottom, #142236 0%, #06114e 100%);
     justify-content: center;
     align-items: center;
     position: relative;
@@ -101,7 +101,7 @@ h1 {
 }
 
 /* Add a class to the dots for styling */
-.star {
+.star, .blink {
     width: 3px;
     height: 3px;
     background-color: white;
@@ -112,6 +112,28 @@ h1 {
     /* Lower z-index to appear behind the container */
 }
 
+.blink {
+    animation: blink 2s infinite;
+    width: 3px;
+    height: 3px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    margin: 0;
+    z-index: 1;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
 
 span {
     position: absolute;
@@ -235,26 +257,64 @@ span:nth-child(10) {
     animation-duration: 2.25s;
 }
 
+
 @media (max-width: 600px) {
+    body {
+        overflow: auto;
+        min-height: 100vh;
+    }
+
     .container {
-        padding: 15px;
+        padding: 20px;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        max-width: 90%;
+        box-shadow: 0px 0px 30px 15px rgb(153, 0, 255);
     }
-    .header h1 {
-        font-size: 2em;
+
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 15px;
     }
-    body{
-        overflow: scroll;
+
+    h1::after {
+        width: 40px;
+        height: 3px;
+    }
+
+    .resume-btn,
+    .Linkdln-btn,
+    .GitHub-btn,
+    .myButton {
+        padding: 12px 25px;
+        font-size: 1em;
+        width: 50%;
+        margin: 5px 0;
+        border-radius: 8px;
+        /* Consistent with desktop */
+    }
+
+    .myButton {
+        width: 80%;
+    }
+
+    .star {
+        width: 2px;
+        height: 2px;
+        animation: twinkle 3s infinite alternate;
+        /* Added twinkle effect */
     }
 
     span {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 4px;
-        height: 4px;
-        background: #fff;
-        border-radius: 50%;
-        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1);
         animation-play-state: paused;
+        width: 3px;
+        height: 3px;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1),
+            0 0 0 6px rgba(255, 255, 255, 0.1),
+            0 0 15px rgba(255, 255, 255, 0.8);
+    }
+
+    span::before {
+        width: 150px;
     }
 }
