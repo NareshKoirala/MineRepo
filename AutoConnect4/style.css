@@ -10,7 +10,7 @@ body {
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
-.back-btn {
+.back-btn, #reset-game  {
     display: inline-block;
     padding: 12px 24px;
     background: #6b0707;
@@ -76,7 +76,7 @@ body {
     outline: none;
 }
 
-#start-game, #reset-game {
+#start-game{
     background: linear-gradient(45deg, #e74c3c, #c0392b);
     border: none;
     padding: 12px 25px;

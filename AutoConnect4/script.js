@@ -15,6 +15,8 @@ $(document).ready(() => {
 
     updateCurrentPlayer();
 
+    $("#reset-game").click(function (){resetGame();});
+
     $("#start-game").click(function () {
         gameMode = $("#game-mode").val();
 
@@ -58,7 +60,6 @@ $(document).ready(() => {
         currentPlayer = currentPlayer === 1 ? 2 : 3 - currentPlayer;
         updateCurrentPlayer();
 
-        check_winner_main();
 
         if (gameMode != "person") {
             movePending = true;
@@ -96,7 +97,6 @@ function computer_move() {
             currentPlayer = currentPlayer === 1 ? 2 : 3 - currentPlayer;
             updateCurrentPlayer();
 
-            check_winner_main();
             movePending = false;
         }
     }
@@ -145,7 +145,7 @@ function MakeBoard() {
             const div = document.createElement("div");
             div.classList.add("Grey");
             div.id = `${i}${j}`;
-            div.textContent = `${i}${j}`; // Add label
+            // div.textContent = `${i}${j}`; // Add label
             td.appendChild(div);
             tr.appendChild(td);
         }
@@ -159,6 +159,8 @@ function updateCurrentPlayer() {
     if (playerElement.length) {
         playerElement.html(`Current Player: <span class="player-color ${currentPlayer === 1 ? 'Yellow' : 'Red'}"></span> Player ${currentPlayer}`);
     }
+
+    check_winner_main();
 }
 
 function valid_col_move(col) {
@@ -383,7 +385,7 @@ function move_checker() {
                 let right_dia = check_Full_Line(r, c, 1, 1);    // Down-right and Up-left
                 let left_dia = check_Full_Line(r, c, 1, -1);    // Down-left and Up-right
 
-                console.log(r + " " + c + " hori: " + JSON.stringify(horizontal) + " ver: " + JSON.stringify(vertical) + " ld: " + JSON.stringify(left_dia) + " rD: " + JSON.stringify(right_dia));
+                // console.log(r + " " + c + " hori: " + JSON.stringify(horizontal) + " ver: " + JSON.stringify(vertical) + " ld: " + JSON.stringify(left_dia) + " rD: " + JSON.stringify(right_dia));
 
                 if (horizontal || vertical || left_dia || right_dia) {
                     let obj_move = {
