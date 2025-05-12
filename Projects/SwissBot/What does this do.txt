@@ -1,3 +1,0 @@
-- it will launch anonify (swiss chatlet daily game/things to do)
-	- use a ai to answer the question
-	- its like a bot which will complete the things u have to do in the website automatically
