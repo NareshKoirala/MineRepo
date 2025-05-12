@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Contact Me";
+}
+
+<style>
+    .contact-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        text-align: center;
+    }
+
+        .contact-container h1,
+        .contact-container h2,
+        .contact-container p {
+            margin-bottom: 20px;
+        }
+
+    .btn-group a {
+        margin: 5px;
+    }
+
+    .auth-links a {
+        margin: 10px;
+        font-weight: bold;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px 20px;
+        text-decoration: none;
+        background-color: #f8f9fa;
+        transition: background-color 0.3s;
+    }
+
+        .auth-links a:hover {
+            background-color: #e2e6ea;
+        }
+</style>
+
+<div class="contact-container">
+    <h1>@ViewData["Title"]</h1>
+    <p>This process is a CRUD process</p>
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div>
+            <h2>Welcome, @UserManager.GetUserName(User)!</h2>
+            <p>You can manage your messages below:</p>
+            <div class="btn-group" role="group">
+                <a class="btn btn-primary" asp-controller="Messages" asp-action="PastMessages">View Past Messages</a>
+                <a class="btn btn-success" asp-controller="Messages" asp-action="Create" asp-route-recipient="Naresh">Send New Message to Naresh</a>
+                <a class="btn btn-info" asp-controller="Messages" asp-action="RepliesFromNaresh">View Naresh's Replies</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h2>Login Required</h2>
+        <p>Please log in or register to access the messaging features.</p>
+        <div class="auth-links">
+            <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </div>
+    }
+</div>
